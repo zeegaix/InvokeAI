@@ -4,6 +4,7 @@ import {
   FormLabel,
   FormLabelProps,
   HStack,
+  VStack,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -70,6 +71,7 @@ export type IAIFullSliderProps = {
   sliderNumberInputStepperProps?: NumberInputStepperProps;
   sliderTooltipProps?: Omit<TooltipProps, 'children'>;
   sliderIAIIconButtonProps?: IAIIconButtonProps;
+  isVertical?: boolean;
 };
 
 const IAISlider = forwardRef((props: IAIFullSliderProps, ref) => {
@@ -102,10 +104,12 @@ const IAISlider = forwardRef((props: IAIFullSliderProps, ref) => {
     sliderNumberInputStepperProps,
     sliderTooltipProps,
     sliderIAIIconButtonProps,
+    isVertical = false,
     ...rest
   } = props;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const Stack = isVertical ? VStack : HStack;
 
   const [localInputValue, setLocalInputValue] = useState<
     string | number | undefined
@@ -218,7 +222,7 @@ const IAISlider = forwardRef((props: IAIFullSliderProps, ref) => {
         </FormLabel>
       )}
 
-      <HStack w="100%" gap={2} alignItems="center">
+      <Stack direction={isVertical ? "column" : "row"} w="100%" h="100%" gap={2} alignItems="center">
         <Slider
           aria-label={label}
           value={value}
@@ -356,7 +360,7 @@ const IAISlider = forwardRef((props: IAIFullSliderProps, ref) => {
             {...sliderIAIIconButtonProps}
           />
         )}
-      </HStack>
+      </Stack>
     </FormControl>
   );
 });

@@ -160,6 +160,7 @@ export interface CanvasState {
   shouldShowStagingImage: boolean;
   shouldShowStagingOutline: boolean;
   shouldSnapToGrid: boolean;
+  shouldShowSliders: boolean;
   stageCoordinates: Vector2d;
   stageDimensions: Dimensions;
   stageScale: number;

@@ -1621,6 +1621,7 @@
         "scaledBoundingBox": "Scaled Bounding Box",
         "showCanvasDebugInfo": "Show Additional Canvas Info",
         "showGrid": "Show Grid",
+        "showSliders": "Show Sliders",
         "showHide": "Show/Hide",
         "showResultsOn": "Show Results (On)",
         "showResultsOff": "Show Results (Off)",

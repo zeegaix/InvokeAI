@@ -31,6 +31,13 @@ import IAICanvasStagingAreaToolbar from './IAICanvasStagingAreaToolbar';
 import IAICanvasStatusText from './IAICanvasStatusText';
 import IAICanvasBoundingBox from './IAICanvasToolbar/IAICanvasBoundingBox';
 import IAICanvasToolPreview from './IAICanvasToolPreview';
+import { useTranslation } from 'react-i18next';
+
+import {
+  setBrushSize,
+} from 'features/canvas/store/canvasSlice';
+
+import IAISlider from 'common/components/IAISlider';
 
 const selector = createMemoizedSelector(
   [stateSelector, isStagingSelector],
@@ -50,6 +57,8 @@ const selector = createMemoizedSelector(
       shouldShowGrid,
       shouldRestrictStrokesToBox,
       shouldAntialias,
+      brushSize,
+      shouldShowSliders,
     } = canvas;
 
     let stageCursor: string | undefined = 'none';
@@ -79,6 +88,8 @@ const selector = createMemoizedSelector(
       isStaging,
       shouldShowIntermediates,
       shouldAntialias,
+      brushSize,
+      shouldShowSliders,
     };
   }
 );
@@ -101,12 +112,15 @@ const IAICanvas = () => {
     isStaging,
     shouldShowIntermediates,
     shouldAntialias,
+    brushSize,
+    shouldShowSliders,
   } = useAppSelector(selector);
   useCanvasHotkeys();
   const dispatch = useAppDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<Konva.Stage | null>(null);
   const canvasBaseLayerRef = useRef<Konva.Layer | null>(null);
+  const { t } = useTranslation();
 
   const canvasStageRefCallback = useCallback((el: Konva.Stage) => {
     setCanvasStage(el as Konva.Stage);
@@ -161,6 +175,15 @@ const IAICanvas = () => {
       resizeObserver.disconnect();
     };
   }, [dispatch]);
+
+  const handleChangeBrushSize = useCallback(
+    (newSize: number) => {
+      dispatch(setBrushSize(newSize));
+    },
+    [dispatch]
+  );
+
+
 
   return (
     <Flex
@@ -250,6 +273,25 @@ const IAICanvas = () => {
       </Box>
       <IAICanvasStatusText />
       <IAICanvasStagingAreaToolbar />
+
+      {shouldShowSliders && (
+      <Flex minWidth={60} direction="row" gap={4} width="50%" height="100%"  align="center">
+          <Flex direction="row" gap={4}  height="50%">
+            <IAISlider
+             // label={t('unifiedCanvas.brushSize')}
+              orientation="vertical"
+              isVertical={true}
+              value={brushSize}
+            //  withInput
+              onChange={handleChangeBrushSize}
+             
+              
+              sliderNumberInputProps={{ max: 500 }}
+            />
+          </Flex>
+      </Flex>
+      )}
+
     </Flex>
   );
 };

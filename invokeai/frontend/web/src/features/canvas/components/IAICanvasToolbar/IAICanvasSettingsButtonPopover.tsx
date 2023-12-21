@@ -14,6 +14,7 @@ import {
   setShouldRestrictStrokesToBox,
   setShouldShowCanvasDebugInfo,
   setShouldShowGrid,
+  setShouldShowSliders,
   setShouldShowIntermediates,
   setShouldSnapToGrid,
 } from 'features/canvas/store/canvasSlice';
@@ -35,6 +36,7 @@ export const canvasControlsSelector = createMemoizedSelector(
       shouldSnapToGrid,
       shouldRestrictStrokesToBox,
       shouldAntialias,
+      shouldShowSliders,
     } = canvas;
 
     return {
@@ -47,6 +49,7 @@ export const canvasControlsSelector = createMemoizedSelector(
       shouldSnapToGrid,
       shouldRestrictStrokesToBox,
       shouldAntialias,
+      shouldShowSliders,
     };
   }
 );
@@ -65,6 +68,7 @@ const IAICanvasSettingsButtonPopover = () => {
     shouldSnapToGrid,
     shouldRestrictStrokesToBox,
     shouldAntialias,
+    shouldShowSliders,
   } = useAppSelector(canvasControlsSelector);
 
   useHotkeys(
@@ -125,6 +129,11 @@ const IAICanvasSettingsButtonPopover = () => {
       dispatch(setShouldAntialias(e.target.checked)),
     [dispatch]
   );
+  const handleChangeShouldSliders = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) =>
+      dispatch(setShouldShowSliders(e.target.checked)),
+    [dispatch]
+  );
 
   return (
     <IAIPopover
@@ -183,6 +192,12 @@ const IAICanvasSettingsButtonPopover = () => {
           label={t('unifiedCanvas.antialiasing')}
           isChecked={shouldAntialias}
           onChange={handleChangeShouldAntialias}
+        />
+
+        <IAISimpleCheckbox
+          label={t('unifiedCanvas.showSliders')}
+          isChecked={shouldShowSliders}
+          onChange={handleChangeShouldSliders}
         />
         <ClearCanvasHistoryButtonModal />
       </Flex>

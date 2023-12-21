@@ -82,6 +82,7 @@ export const initialCanvasState: CanvasState = {
   shouldShowStagingImage: true,
   shouldShowStagingOutline: true,
   shouldSnapToGrid: true,
+  shouldShowSliders: true,
   stageCoordinates: { x: 0, y: 0 },
   stageDimensions: { width: 0, height: 0 },
   stageScale: 1,
@@ -480,6 +481,9 @@ export const canvasSlice = createSlice({
     },
     setShouldShowGrid: (state, action: PayloadAction<boolean>) => {
       state.shouldShowGrid = action.payload;
+    },
+    setShouldShowSliders: (state, action: PayloadAction<boolean>) => {
+      state.shouldShowSliders = action.payload;
     },
     setIsMovingStage: (state, action: PayloadAction<boolean>) => {
       state.isMovingStage = action.payload;
@@ -881,6 +885,7 @@ export const {
   setShouldShowCanvasDebugInfo,
   setShouldShowCheckboardTransparency,
   setShouldShowGrid,
+  setShouldShowSliders,
   setShouldShowIntermediates,
   setShouldShowStagingImage,
   setShouldShowStagingOutline,
