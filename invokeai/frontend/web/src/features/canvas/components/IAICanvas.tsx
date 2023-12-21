@@ -31,7 +31,7 @@ import IAICanvasStagingAreaToolbar from './IAICanvasStagingAreaToolbar';
 import IAICanvasStatusText from './IAICanvasStatusText';
 import IAICanvasBoundingBox from './IAICanvasToolbar/IAICanvasBoundingBox';
 import IAICanvasToolPreview from './IAICanvasToolPreview';
-import { useTranslation } from 'react-i18next';
+//import { useTranslation } from 'react-i18next';
 
 import {
   setBrushSize,
@@ -120,7 +120,7 @@ const IAICanvas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<Konva.Stage | null>(null);
   const canvasBaseLayerRef = useRef<Konva.Layer | null>(null);
-  const { t } = useTranslation();
+  
 
   const canvasStageRefCallback = useCallback((el: Konva.Stage) => {
     setCanvasStage(el as Konva.Stage);

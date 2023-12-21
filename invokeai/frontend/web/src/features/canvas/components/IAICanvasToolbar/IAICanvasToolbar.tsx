@@ -3,6 +3,7 @@ import { createMemoizedSelector } from 'app/store/createMemoizedSelector';
 import { stateSelector } from 'app/store/store';
 import { useAppDispatch, useAppSelector } from 'app/store/storeHooks';
 import IAIIconButton from 'common/components/IAIIconButton';
+import IAIColorPointer from 'common/components/IAIColorPointer';
 import IAIMantineSelect from 'common/components/IAIMantineSelect';
 import { useCopyImageToClipboard } from 'common/hooks/useCopyImageToClipboard';
 import { useImageUploadButton } from 'common/hooks/useImageUploadButton';
@@ -212,6 +213,10 @@ const IAICanvasToolbar = () => {
         flexWrap: 'wrap',
       }}
     >
+      <IAIColorPointer
+        aria-label={`${t('unifiedCanvas.colorPicker')} (C)`}       
+      />
+
       <Box w={24}>
         <IAIMantineSelect
           tooltip={`${t('unifiedCanvas.layer')} (Q)`}
