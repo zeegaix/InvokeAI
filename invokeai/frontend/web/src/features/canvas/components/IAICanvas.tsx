@@ -193,7 +193,6 @@ const IAICanvas = () => {
     console.log('handleChangeA called with new alpha:', newColorAlpha);
     const newBrushColor: RgbaColor = { ...brushColor, a: newColorAlpha };
     dispatch(setBrushColor(newBrushColor));
-    console.log('brushColor change to:', newBrushColor);
   },
   [dispatch, brushColor]
   );
@@ -290,7 +289,8 @@ const IAICanvas = () => {
       <IAICanvasStagingAreaToolbar />
 
       {shouldShowSliders && (
-      <Flex minWidth={5} minHeight="50" direction="column" gap={50} width="0%" height="50%" align='center'  style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)' }}>
+      <Flex minWidth={5} minHeight="50" direction="column" gap={50} width="0%" height="50%" align='center' background="rgb(43, 48, 59)" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', padding: '14px', borderRadius: '20px',
+      boxShadow: '0px 0px 1px black'  }} >
           <Flex direction="row" gap={4}  height="50%" >
             <IAISlider
              // label={t('unifiedCanvas.brushSize')}

@@ -7,7 +7,9 @@ import { CanvasInitialImageDropData } from 'features/dnd/types';
 import { isValidDrop } from 'features/dnd/util/isValidDrop';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import IAIColorPointer from 'common/components/IAIColorPointer';
+import IAIColorPointer from 'features/canvas/components/IAICanvasToolbar/IAIColorPointer';
+import IAIPopover from 'common/components/IAIPopover';
+import IAIBrushSettingsPopup from 'features/canvas/components/IAIBrushSettingsPopup';
 
 const droppableData: CanvasInitialImageDropData = {
   id: 'canvas-intial-image',
@@ -43,9 +45,17 @@ const UnifiedCanvasContent = () => {
       }}
     >
       <Flex width="100%">
+      <IAIPopover
+        triggerComponent={
           <IAIColorPointer 
-             aria-label={`${t('unifiedCanvas.colorPicker')} (C)`}       
+             aria-label={`${t('unifiedCanvas.colorPointer')} (C)`} mr="3px"    
           />
+        }
+      >
+        <IAIBrushSettingsPopup />
+      </IAIPopover>
+          
+
           <Flex alignItems='center' justifyContent= 'center' width="100%">
             <IAICanvasToolbar />
           </Flex>

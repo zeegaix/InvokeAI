@@ -1,11 +1,8 @@
-import { Box, ButtonGroup, Flex } from '@chakra-ui/react';
+import {  ButtonGroup } from '@chakra-ui/react';
 import { createMemoizedSelector } from 'app/store/createMemoizedSelector';
 import { stateSelector } from 'app/store/store';
 import { useAppDispatch, useAppSelector } from 'app/store/storeHooks';
-import IAIColorPicker from 'common/components/IAIColorPicker';
 import IAIIconButton from 'common/components/IAIIconButton';
-import IAIPopover from 'common/components/IAIPopover';
-import IAISlider from 'common/components/IAISlider';
 import { isStagingSelector } from 'features/canvas/store/canvasSelectors';
 import {
   addEraseRect,
@@ -25,7 +22,6 @@ import {
   FaFillDrip,
   FaPaintBrush,
   FaPlus,
-  FaSlidersH,
 } from 'react-icons/fa';
 
 export const selector = createMemoizedSelector(
@@ -235,40 +231,6 @@ const IAICanvasToolChooserOptions = () => {
         isDisabled={isStaging}
         onClick={handleSelectColorPickerTool}
       />
-      <IAIPopover
-        triggerComponent={
-          <IAIIconButton
-            aria-label={t('unifiedCanvas.brushOptions')}
-            tooltip={t('unifiedCanvas.brushOptions')}
-            icon={<FaSlidersH />}
-          />
-        }
-      >
-        <Flex minWidth={60} direction="column" gap={4} width="100%">
-          <Flex gap={4} justifyContent="space-between">
-            <IAISlider
-              label={t('unifiedCanvas.brushSize')}
-              value={brushSize}
-              withInput
-              onChange={handleChangeBrushSize}
-              sliderNumberInputProps={{ max: 500 }}
-            />
-          </Flex>
-          <Box
-            sx={{
-              width: '100%',
-              paddingTop: 2,
-              paddingBottom: 2,
-            }}
-          >
-            <IAIColorPicker
-              withNumberInput={true}
-              color={brushColor}
-              onChange={handleChangeBrushColor}
-            />
-          </Box>
-        </Flex>
-      </IAIPopover>
     </ButtonGroup>
   );
 };

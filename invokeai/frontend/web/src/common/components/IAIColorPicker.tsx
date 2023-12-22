@@ -15,9 +15,22 @@ const colorPickerStyles: NonNullable<ChakraProps['sx']> = {
 };
 
 const sx: ChakraProps['sx'] = {
-  '.react-colorful__hue-pointer': colorPickerStyles,
-  '.react-colorful__saturation-pointer': colorPickerStyles,
-  '.react-colorful__alpha-pointer': colorPickerStyles,
+  '.react-colorful__saturation': {
+    margin: '15px 0',
+    borderRadius: '5px',
+    borderBottom: 'none',
+  },
+  '.react-colorful__hue': {
+    order: -1,
+  },
+  '.react-colorful__hue, .react-colorful__alpha': {
+    height: '14px',
+    borderRadius: '5px',
+  },
+  '.react-colorful__hue-pointer, .react-colorful__alpha-pointer': {
+    width: '20px',
+    height: '20px',
+  },
   gap: 2,
   flexDir: 'column',
 };
