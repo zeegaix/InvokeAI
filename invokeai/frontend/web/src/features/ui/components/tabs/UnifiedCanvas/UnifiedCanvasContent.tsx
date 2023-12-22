@@ -7,6 +7,7 @@ import { CanvasInitialImageDropData } from 'features/dnd/types';
 import { isValidDrop } from 'features/dnd/util/isValidDrop';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import IAIColorPointer from 'common/components/IAIColorPointer';
 
 const droppableData: CanvasInitialImageDropData = {
   id: 'canvas-intial-image',
@@ -25,6 +26,8 @@ const UnifiedCanvasContent = () => {
   });
 
   return (
+    
+        
     <Flex
       layerStyle="first"
       ref={setDroppableRef}
@@ -39,15 +42,23 @@ const UnifiedCanvasContent = () => {
         h: 'full',
       }}
     >
-      <IAICanvasToolbar />
-      <IAICanvas />
-      {isValidDrop(droppableData, active) && (
-        <IAIDropOverlay
-          isOver={isOver}
-          label={t('toast.setCanvasInitialImage')}
-        />
-      )}
+      <Flex width="100%">
+          <IAIColorPointer 
+             aria-label={`${t('unifiedCanvas.colorPicker')} (C)`}       
+          />
+          <Flex alignItems='center' justifyContent= 'center' width="100%">
+            <IAICanvasToolbar />
+          </Flex>
+      </Flex>
+          <IAICanvas />
+          {isValidDrop(droppableData, active) && (
+            <IAIDropOverlay
+              isOver={isOver}
+              label={t('toast.setCanvasInitialImage')}
+            />
+          )}
     </Flex>
+    
   );
 };
 

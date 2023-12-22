@@ -290,7 +290,7 @@ const IAICanvas = () => {
       <IAICanvasStagingAreaToolbar />
 
       {shouldShowSliders && (
-      <Flex minHeight="50" direction="column" gap={50} width="0%" height="50%" align='center'>
+      <Flex minWidth={5} minHeight="50" direction="column" gap={50} width="0%" height="50%" align='center'  style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)' }}>
           <Flex direction="row" gap={4}  height="50%" >
             <IAISlider
              // label={t('unifiedCanvas.brushSize')}
