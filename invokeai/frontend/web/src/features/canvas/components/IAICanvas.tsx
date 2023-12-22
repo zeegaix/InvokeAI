@@ -32,9 +32,11 @@ import IAICanvasStatusText from './IAICanvasStatusText';
 import IAICanvasBoundingBox from './IAICanvasToolbar/IAICanvasBoundingBox';
 import IAICanvasToolPreview from './IAICanvasToolPreview';
 //import { useTranslation } from 'react-i18next';
+import { RgbaColor } from 'react-colorful';
 
 import {
   setBrushSize,
+  setBrushColor,
 } from 'features/canvas/store/canvasSlice';
 
 import IAISlider from 'common/components/IAISlider';
@@ -58,6 +60,7 @@ const selector = createMemoizedSelector(
       shouldRestrictStrokesToBox,
       shouldAntialias,
       brushSize,
+      brushColor,
       shouldShowSliders,
     } = canvas;
 
@@ -89,6 +92,7 @@ const selector = createMemoizedSelector(
       shouldShowIntermediates,
       shouldAntialias,
       brushSize,
+      brushColor,
       shouldShowSliders,
     };
   }
@@ -113,6 +117,7 @@ const IAICanvas = () => {
     shouldShowIntermediates,
     shouldAntialias,
     brushSize,
+    brushColor,
     shouldShowSliders,
   } = useAppSelector(selector);
   useCanvasHotkeys();
@@ -182,8 +187,18 @@ const IAICanvas = () => {
     },
     [dispatch]
   );
-
-
+    
+  const handleChangeA = useCallback(
+  (newColorAlpha: number) => {
+    console.log('handleChangeA called with new alpha:', newColorAlpha);
+    const newBrushColor: RgbaColor = { ...brushColor, a: newColorAlpha };
+    dispatch(setBrushColor(newBrushColor));
+    console.log('brushColor change to:', newBrushColor);
+  },
+  [dispatch, brushColor]
+  );
+  
+  
 
   return (
     <Flex
@@ -275,8 +290,8 @@ const IAICanvas = () => {
       <IAICanvasStagingAreaToolbar />
 
       {shouldShowSliders && (
-      <Flex minWidth={60} direction="row" gap={4} width="50%" height="100%"  align="center">
-          <Flex direction="row" gap={4}  height="50%">
+      <Flex minHeight="50" direction="column" gap={50} width="0%" height="50%" align='center'>
+          <Flex direction="row" gap={4}  height="50%" >
             <IAISlider
              // label={t('unifiedCanvas.brushSize')}
               orientation="vertical"
@@ -287,6 +302,22 @@ const IAICanvas = () => {
              
               
               sliderNumberInputProps={{ max: 500 }}
+            />
+          </Flex>
+          <Flex direction="row" gap={4}  height="50%">
+            <IAISlider
+             // label={t('unifiedCanvas.brushSize')}
+              min={0}
+              max={1}
+              step={0.01}
+              orientation="vertical"
+              isVertical={true}
+              value={brushColor.a}
+              //  withInput
+              onChange={handleChangeA}
+             
+              
+             // sliderNumberInputProps={{ max: 1 }}
             />
           </Flex>
       </Flex>
