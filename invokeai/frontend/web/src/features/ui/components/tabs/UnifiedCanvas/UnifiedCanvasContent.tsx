@@ -1,4 +1,8 @@
 import { Flex } from '@chakra-ui/react';
+import { createMemoizedSelector } from 'app/store/createMemoizedSelector';
+import { isStagingSelector } from 'features/canvas/store/canvasSelectors';
+import { useAppSelector } from 'app/store/storeHooks';
+import { stateSelector } from 'app/store/store';
 import IAIDropOverlay from 'common/components/IAIDropOverlay';
 import IAICanvas from 'features/canvas/components/IAICanvas';
 import IAICanvasToolbar from 'features/canvas/components/IAICanvasToolbar/IAICanvasToolbar';
@@ -10,11 +14,27 @@ import { useTranslation } from 'react-i18next';
 import IAIColorPointer from 'features/canvas/components/IAICanvasToolbar/IAIColorPointer';
 import IAIPopover from 'common/components/IAIPopover';
 import IAIBrushSettingsPopup from 'features/canvas/components/IAIBrushSettingsPopup';
-
+import IAICanvasMaskOptions from 'features/canvas/components/IAICanvasToolbar/IAICanvasMaskOptions';
 const droppableData: CanvasInitialImageDropData = {
   id: 'canvas-intial-image',
   actionType: 'SET_CANVAS_INITIAL_IMAGE',
 };
+export const selector = createMemoizedSelector(
+  [stateSelector, isStagingSelector],
+  ({ canvas }, isStaging) => {
+    const { maskColor, layer, isMaskEnabled, shouldPreserveMaskedArea } =
+      canvas;
+
+    return {
+      layer,
+      maskColor,
+      isMaskEnabled,
+      shouldPreserveMaskedArea,
+      isStaging,
+    };
+  }
+);
+
 
 const UnifiedCanvasContent = () => {
   const { t } = useTranslation();
@@ -26,6 +46,11 @@ const UnifiedCanvasContent = () => {
     id: 'unifiedCanvas',
     data: droppableData,
   });
+
+  const {
+    layer,
+  } = useAppSelector(selector);
+
 
   return (
     
@@ -52,7 +77,7 @@ const UnifiedCanvasContent = () => {
           />
         }
       >
-        <IAIBrushSettingsPopup />
+         {layer == 'mask' ? <IAICanvasMaskOptions /> : <IAIBrushSettingsPopup />}
       </IAIPopover>
           
 

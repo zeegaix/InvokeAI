@@ -16,13 +16,9 @@ import { isStagingSelector } from 'features/canvas/store/canvasSelectors';
 import {
   resetCanvas,
   resetCanvasView,
-  setIsMaskEnabled,
-  setLayer,
   setTool,
+  setLayer,
 } from 'features/canvas/store/canvasSlice';
-import {
-  CanvasLayer,
-} from 'features/canvas/store/canvasTypes';
 import { getCanvasBaseLayer } from 'features/canvas/util/konvaInstanceProvider';
 import { memo, useCallback } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -36,8 +32,9 @@ import {
   FaSave,
   FaTrash,
   FaUpload,
+  FaMask,
 } from 'react-icons/fa';
-import IAICanvasMaskOptions from './IAICanvasMaskOptions';
+
 import IAICanvasRedoButton from './IAICanvasRedoButton';
 import IAICanvasSettingsButtonPopover from './IAICanvasSettingsButtonPopover';
 import IAICanvasToolChooserOptions from './IAICanvasToolChooserOptions';
@@ -46,12 +43,13 @@ import IAICanvasUndoButton from './IAICanvasUndoButton';
 export const selector = createMemoizedSelector(
   [stateSelector, isStagingSelector],
   ({ canvas }, isStaging) => {
-    const { tool, shouldCropToBoundingBoxOnSave, layer, isMaskEnabled } =
+    const { maskColor, tool, shouldCropToBoundingBoxOnSave, layer, isMaskEnabled } =
       canvas;
 
     return {
       isStaging,
       isMaskEnabled,
+      maskColor,
       tool,
       layer,
       shouldCropToBoundingBoxOnSave,
@@ -61,7 +59,7 @@ export const selector = createMemoizedSelector(
 
 const IAICanvasToolbar = () => {
   const dispatch = useAppDispatch();
-  const { isStaging, isMaskEnabled, layer, tool } = useAppSelector(selector);
+  
   const canvasBaseLayer = getCanvasBaseLayer();
 
   const { t } = useTranslation();
@@ -70,6 +68,53 @@ const IAICanvasToolbar = () => {
   const { getUploadButtonProps, getUploadInputProps } = useImageUploadButton({
     postUploadAction: { type: 'SET_CANVAS_INITIAL_IMAGE' },
   });
+
+  const {
+    layer,
+    isMaskEnabled,
+    isStaging,
+    tool,
+  } = useAppSelector(selector);
+
+  const handleToggleMaskLayer = useCallback(() => {
+    dispatch(setLayer(layer === 'mask' ? 'base' : 'mask'));
+  }, [dispatch, layer]);
+
+  useHotkeys(
+    ['q'],
+    () => {
+      handleToggleMaskLayer();
+    },
+    {
+      enabled: () => !isStaging,
+      preventDefault: true,
+    },
+    [layer]
+  );
+
+  useHotkeys(
+    ['shift+c'],
+    () => {
+      handleClearMask();
+    },
+    {
+      enabled: () => !isStaging,
+      preventDefault: true,
+    },
+    []
+  );
+
+  useHotkeys(
+    ['h'],
+    () => {
+      handleToggleEnableMask();
+    },
+    {
+      enabled: () => !isStaging,
+      preventDefault: true,
+    },
+    [isMaskEnabled]
+  );
 
   useHotkeys(
     ['v'],
@@ -191,16 +236,6 @@ const IAICanvasToolbar = () => {
     dispatch(canvasDownloadedAsImage());
   }, [dispatch]);
 
-  const handleChangeLayer = useCallback(
-    (v: string) => {
-      const newLayer = v as CanvasLayer;
-      dispatch(setLayer(newLayer));
-      if (newLayer === 'mask' && !isMaskEnabled) {
-        dispatch(setIsMaskEnabled(true));
-      }
-    },
-    [dispatch, isMaskEnabled]
-  );
 
   return (
        
@@ -213,8 +248,14 @@ const IAICanvasToolbar = () => {
       >
       
 
-        <IAICanvasMaskOptions />
-
+        <IAIIconButton
+          aria-label={t('unifiedCanvas.maskingOptions')}
+          tooltip={t('unifiedCanvas.maskingOptions')}
+          icon={<FaMask />}
+          isChecked={layer === 'mask'}
+          onClick={handleToggleMaskLayer}
+          isDisabled={isStaging}
+        />
         
         <IAICanvasToolChooserOptions />
 

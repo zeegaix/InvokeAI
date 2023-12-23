@@ -35,6 +35,8 @@ const IAColorPointer = forwardRef((props: IAColorPointer, forwardedRef) => {
   const { brushColor } = useAppSelector(selector);
   const rgbaColor = `rgba(${brushColor.r}, ${brushColor.g}, ${brushColor.b}, ${brushColor.a})`;
   return (
+
+
       <Tooltip
           label={tooltip}
           hasArrow
@@ -60,7 +62,6 @@ const IAColorPointer = forwardRef((props: IAColorPointer, forwardedRef) => {
             {...rest}
           />
       </Tooltip>
-
 
   );
 });
