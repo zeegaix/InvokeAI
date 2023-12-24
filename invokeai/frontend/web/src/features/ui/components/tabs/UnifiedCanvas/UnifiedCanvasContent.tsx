@@ -11,10 +11,7 @@ import { CanvasInitialImageDropData } from 'features/dnd/types';
 import { isValidDrop } from 'features/dnd/util/isValidDrop';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import IAIColorPointer from 'features/canvas/components/IAICanvasToolbar/IAIColorPointer';
-import IAIPopover from 'common/components/IAIPopover';
-import IAIBrushSettingsPopup from 'features/canvas/components/IAIBrushSettingsPopup';
-import IAICanvasMaskOptions from 'features/canvas/components/IAICanvasToolbar/IAICanvasMaskOptions';
+
 const droppableData: CanvasInitialImageDropData = {
   id: 'canvas-intial-image',
   actionType: 'SET_CANVAS_INITIAL_IMAGE',
@@ -61,7 +58,7 @@ const UnifiedCanvasContent = () => {
       tabIndex={-1}
       sx={{
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         gap: 4,
         p: 2,
         borderRadius: 'base',
@@ -70,18 +67,10 @@ const UnifiedCanvasContent = () => {
       }}
     >
       <Flex width="100%">
-      <IAIPopover
-        triggerComponent={
-          <IAIColorPointer 
-             aria-label={`${t('unifiedCanvas.colorPointer')} (C)`} mr="3px"    
-          />
-        }
-      >
-         {layer == 'mask' ? <IAICanvasMaskOptions /> : <IAIBrushSettingsPopup />}
-      </IAIPopover>
+      
           
 
-          <Flex alignItems='center' justifyContent= 'center' width="100%">
+          <Flex alignItems='flex-start' justifyContent= 'flex-start' width="100%">
             <IAICanvasToolbar />
           </Flex>
       </Flex>

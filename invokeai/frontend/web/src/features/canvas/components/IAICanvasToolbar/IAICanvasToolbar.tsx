@@ -19,6 +19,7 @@ import {
   setTool,
   setLayer,
   setIsMaskEnabled,
+  clearMask,
 } from 'features/canvas/store/canvasSlice';
 import { getCanvasBaseLayer } from 'features/canvas/util/konvaInstanceProvider';
 import { memo, useCallback, ChangeEvent } from 'react';
@@ -28,12 +29,18 @@ import {
   FaArrowsAlt,
   FaCrosshairs,
   FaMask,
+  FaTrash,
 } from 'react-icons/fa';
 import SettingSwitch from 'features/system/components/SettingsModal/SettingSwitch';
 import IAICanvasRedoButton from './IAICanvasRedoButton';
 import IAICanvasSettingsButtonPopover from './IAICanvasSettingsButtonPopover';
 import IAICanvasToolChooserOptions from './IAICanvasToolChooserOptions';
 import IAICanvasUndoButton from './IAICanvasUndoButton';
+import IAIColorPointer from 'features/canvas/components/IAICanvasToolbar/IAIColorPointer';
+import IAIPopover from 'common/components/IAIPopover';
+import IAIBrushSettingsPopup from 'features/canvas/components/IAIBrushSettingsPopup';
+import IAICanvasMaskOptions from 'features/canvas/components/IAICanvasToolbar/IAICanvasMaskOptions';
+
 
 export const selector = createMemoizedSelector(
   [stateSelector, isStagingSelector],
@@ -235,6 +242,12 @@ const IAICanvasToolbar = () => {
       [dispatch]
   );
 
+
+  const handleClearMask = useCallback(() => {
+    dispatch(clearMask());
+  }, [dispatch]);
+
+
   const handleToggleMaskLayer = useCallback(() => {
     dispatch(setLayer(layer === 'mask' ? 'base' : 'mask'));
     if (!isMaskEnabled) {
@@ -245,73 +258,92 @@ const IAICanvasToolbar = () => {
 
   return (
        
-      <Flex
+      <Flex width="100%"
         sx={{
-          alignItems: 'center',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
           gap: 2,
           flexWrap: 'wrap',
         }}
       >
-        <Flex
-          sx={{
-            backgroundColor: 'rgb(124, 135, 156)', // slightly gray color
-            borderRadius: '5px', // rounded corners
-            alignItems: 'center',
-            gap: 2,
-            flexWrap: 'wrap',
-          }}
+
+        <IAIPopover
+          triggerComponent={
+            <IAIColorPointer 
+              aria-label={`${t('unifiedCanvas.colorPointer')} (C)`} mr="3px"    
+            />
+          }
         >
+          {layer == 'mask' ? <IAICanvasMaskOptions /> : <IAIBrushSettingsPopup />}
+        </IAIPopover>
 
-          
+          <Flex gap="2">
+            <Flex
+              sx={{
+                backgroundColor: 'rgb(124, 135, 156)', // slightly gray color
+                borderRadius: '5px', // rounded corners
+                alignItems: 'center',
+                gap: 2,
+                flexWrap: 'wrap',
+              }}
+            >
 
 
-         <SettingSwitch
-         sx={{
-          marginLeft: '10px', // add more gap to the right
-        }}
-                 // label={t('unifiedCanvas.enableMask')}
-                  tooltip={t('unifiedCanvas.enableMask')}
-                  isChecked={isMaskEnabled}
-                  onChange={handleToggleEnableMask}
-           />
+                <IAIIconButton
+                    aria-label={t('unifiedCanvas.clearMask')}
+                    tooltip={t('unifiedCanvas.clearMask')}
+                    icon={<FaTrash />}
+                    onClick={handleClearMask}
+                    isDisabled={isStaging}
+                />
 
-        <IAIIconButton
-          aria-label={t('unifiedCanvas.maskingOptions')}
-          tooltip={t('unifiedCanvas.maskingOptions')}
-          icon={<FaMask />}
-          isChecked={layer === 'mask'}
-          onClick={handleToggleMaskLayer}
-          isDisabled={isStaging}
-        />
+                <SettingSwitch
+                        // label={t('unifiedCanvas.enableMask')}
+                          tooltip={t('unifiedCanvas.enableMask')}
+                          isChecked={isMaskEnabled}
+                          onChange={handleToggleEnableMask}
+                          //isDisabled={isStaging}
+                />
+
+                <IAIIconButton
+                  aria-label={t('unifiedCanvas.maskingOptions')}
+                  tooltip={t('unifiedCanvas.maskingOptions')}
+                  icon={<FaMask />}
+                  isChecked={layer === 'mask'}
+                  onClick={handleToggleMaskLayer}
+                  isDisabled={isStaging}
+                />
+                  
+            </Flex>
+
+            <IAICanvasToolChooserOptions />
+
+            <ButtonGroup isAttached>
+              <IAIIconButton
+                aria-label={`${t('unifiedCanvas.move')} (V)`}
+                tooltip={`${t('unifiedCanvas.move')} (V)`}
+                icon={<FaArrowsAlt />}
+                isChecked={tool === 'move' || isStaging}
+                onClick={handleSelectMoveTool}
+              />
+              <IAIIconButton
+                aria-label={`${t('unifiedCanvas.resetView')} (R)`}
+                tooltip={`${t('unifiedCanvas.resetView')} (R)`}
+                icon={<FaCrosshairs />}
+                onClick={handleClickResetCanvasView}
+              />
+            </ButtonGroup>
+
+            <ButtonGroup isAttached>
+              <IAICanvasUndoButton />
+              <IAICanvasRedoButton />
+            </ButtonGroup>
+          </Flex>
+            
+          <ButtonGroup isAttached>
+            <IAICanvasSettingsButtonPopover />
+          </ButtonGroup>
         </Flex>
-        <IAICanvasToolChooserOptions />
-
-        <ButtonGroup isAttached>
-          <IAIIconButton
-            aria-label={`${t('unifiedCanvas.move')} (V)`}
-            tooltip={`${t('unifiedCanvas.move')} (V)`}
-            icon={<FaArrowsAlt />}
-            isChecked={tool === 'move' || isStaging}
-            onClick={handleSelectMoveTool}
-          />
-          <IAIIconButton
-            aria-label={`${t('unifiedCanvas.resetView')} (R)`}
-            tooltip={`${t('unifiedCanvas.resetView')} (R)`}
-            icon={<FaCrosshairs />}
-            onClick={handleClickResetCanvasView}
-          />
-        </ButtonGroup>
-
-        <ButtonGroup isAttached>
-          <IAICanvasUndoButton />
-          <IAICanvasRedoButton />
-        </ButtonGroup>
-
-        
-        <ButtonGroup isAttached>
-          <IAICanvasSettingsButtonPopover />
-        </ButtonGroup>
-      </Flex>
   );
 };
 

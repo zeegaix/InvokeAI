@@ -8,8 +8,6 @@ import IAISimpleCheckbox from 'common/components/IAISimpleCheckbox';
 import { canvasMaskSavedToGallery } from 'features/canvas/store/actions';
 import { isStagingSelector } from 'features/canvas/store/canvasSelectors';
 import {
-  clearMask,
-  setIsMaskEnabled,
   setMaskColor,
   setShouldPreserveMaskedArea,
 } from 'features/canvas/store/canvasSlice';
@@ -18,7 +16,7 @@ import { ChangeEvent, memo, useCallback } from 'react';
 import { RgbaColor } from 'react-colorful';
 
 import { useTranslation } from 'react-i18next';
-import { FaSave, FaTrash } from 'react-icons/fa';
+import { FaSave} from 'react-icons/fa';
 
 export const selector = createMemoizedSelector(
   [stateSelector, isStagingSelector],
@@ -40,23 +38,11 @@ const IAICanvasMaskOptions = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const {
-    layer,
-    isMaskEnabled,
-    isStaging,
     shouldPreserveMaskedArea,
     maskColor,
   } = useAppSelector(selector);
   
 
- 
-
-  const handleClearMask = useCallback(() => {
-    dispatch(clearMask());
-  }, [dispatch]);
-
-  const handleToggleEnableMask = useCallback(() => {
-    dispatch(setIsMaskEnabled(!isMaskEnabled));
-  }, [dispatch, isMaskEnabled]);
 
   const handleSaveMask = useCallback(async () => {
     dispatch(canvasMaskSavedToGallery());
@@ -79,11 +65,6 @@ const IAICanvasMaskOptions = () => {
   return (
     <Flex direction="column" gap={2}>
         <IAISimpleCheckbox
-          label={`${t('unifiedCanvas.enableMask')} (H)`}
-          isChecked={isMaskEnabled}
-          onChange={handleToggleEnableMask}
-        />
-        <IAISimpleCheckbox
           label={t('unifiedCanvas.preserveMaskedArea')}
           isChecked={shouldPreserveMaskedArea}
           onChange={handleChangePreserveMaskedArea}
@@ -93,9 +74,6 @@ const IAICanvasMaskOptions = () => {
         </Box>
         <IAIButton size="sm" leftIcon={<FaSave />} onClick={handleSaveMask}>
           {t('unifiedCanvas.saveMask')}
-        </IAIButton>
-        <IAIButton size="sm" leftIcon={<FaTrash />} onClick={handleClearMask}>
-          {t('unifiedCanvas.clearMask')}
         </IAIButton>
       </Flex>
   );
