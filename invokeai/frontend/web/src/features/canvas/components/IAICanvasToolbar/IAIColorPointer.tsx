@@ -15,10 +15,12 @@ import { useAppSelector } from 'app/store/storeHooks';
 export const selector = createMemoizedSelector(
   [stateSelector, isStagingSelector],
   ({ canvas }, isStaging) => {
-    const { brushColor } = canvas;
+    const { brushColor, layer, maskColor } = canvas;
 
     return {
       brushColor,
+      layer,
+      maskColor,
     };
   }
 );
@@ -30,10 +32,98 @@ export type IAColorPointer = IconButtonProps & {
   isChecked?: boolean;
 };
 
+const getColoredSVG = (color: string) => {
+  const svg = `<svg width="60px" height="60px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+  <g transform="matrix(0.5,0,0,0.5,0,0)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,2.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,7.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,10)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,12.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,15)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,17.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,20)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,22.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,25)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,27.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,30)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-2.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-7.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-10)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-12.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-15)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-17.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-20)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-22.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-25)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-27.5)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+  <g transform="matrix(0.5,0,0,0.5,0,-30)">
+      <path d="M-3.5,63.5L64,-4" style="fill:none;stroke:black;stroke-width:1px;"/>
+  </g>
+</svg>`.replaceAll('black', color);
+
+return encodeURIComponent(svg);
+};
+
+
+
 const IAColorPointer = forwardRef((props: IAColorPointer, forwardedRef) => {
   const { role, tooltip = '', tooltipProps, isChecked, ...rest } = props;
-  const { brushColor } = useAppSelector(selector);
+  const { brushColor, layer, maskColor } = useAppSelector(selector);
   const rgbaColor = `rgba(${brushColor.r}, ${brushColor.g}, ${brushColor.b}, ${brushColor.a})`;
+  const rgbaMaskColor = `rgba(${maskColor.r}, ${maskColor.g}, ${maskColor.b}, ${maskColor.a})`;
+
+  const maskSvg = getColoredSVG(rgbaMaskColor);
+
   return (
 
 
@@ -45,7 +135,22 @@ const IAColorPointer = forwardRef((props: IAColorPointer, forwardedRef) => {
             ? { placement: tooltipProps.placement }
             : { placement: 'top' })}
         >
-        
+        {layer == 'mask' ?
+          <IconButton
+            ref={forwardedRef}
+            variant='outline'
+            style={{ 
+              border: '2px solid',
+              backgroundImage: `url("data:image/svg+xml,${maskSvg}")`, // Use the URL-encoded SVG
+              //background: '#fff',
+              backgroundRepeat: 'no-repeat', // Don't repeat the SVG
+              //backgroundSize: 'cover',
+            }}
+            isRound={true}
+            
+            {...rest}
+            />
+        : 
           <IconButton
             ref={forwardedRef}
             variant='outline'
@@ -61,6 +166,11 @@ const IAColorPointer = forwardRef((props: IAColorPointer, forwardedRef) => {
             _hover={{ background: rgbaColor }}
             {...rest}
           />
+
+        }
+       
+
+        
       </Tooltip>
 
   );

@@ -26,13 +26,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 import {
   FaArrowsAlt,
-  FaCopy,
   FaCrosshairs,
-  FaDownload,
-  FaLayerGroup,
-  FaSave,
-  FaTrash,
-  FaUpload,
   FaMask,
 } from 'react-icons/fa';
 import SettingSwitch from 'features/system/components/SettingsModal/SettingSwitch';
@@ -267,6 +261,10 @@ const IAICanvasToolbar = () => {
             flexWrap: 'wrap',
           }}
         >
+
+          
+
+
          <SettingSwitch
          sx={{
           marginLeft: '10px', // add more gap to the right
@@ -305,60 +303,11 @@ const IAICanvasToolbar = () => {
         </ButtonGroup>
 
         <ButtonGroup isAttached>
-          <IAIIconButton
-            aria-label={`${t('unifiedCanvas.mergeVisible')} (Shift+M)`}
-            tooltip={`${t('unifiedCanvas.mergeVisible')} (Shift+M)`}
-            icon={<FaLayerGroup />}
-            onClick={handleMergeVisible}
-            isDisabled={isStaging}
-          />
-          <IAIIconButton
-            aria-label={`${t('unifiedCanvas.saveToGallery')} (Shift+S)`}
-            tooltip={`${t('unifiedCanvas.saveToGallery')} (Shift+S)`}
-            icon={<FaSave />}
-            onClick={handleSaveToGallery}
-            isDisabled={isStaging}
-          />
-          {isClipboardAPIAvailable && (
-            <IAIIconButton
-              aria-label={`${t('unifiedCanvas.copyToClipboard')} (Cmd/Ctrl+C)`}
-              tooltip={`${t('unifiedCanvas.copyToClipboard')} (Cmd/Ctrl+C)`}
-              icon={<FaCopy />}
-              onClick={handleCopyImageToClipboard}
-              isDisabled={isStaging}
-            />
-          )}
-          <IAIIconButton
-            aria-label={`${t('unifiedCanvas.downloadAsImage')} (Shift+D)`}
-            tooltip={`${t('unifiedCanvas.downloadAsImage')} (Shift+D)`}
-            icon={<FaDownload />}
-            onClick={handleDownloadAsImage}
-            isDisabled={isStaging}
-          />
-        </ButtonGroup>
-        <ButtonGroup isAttached>
           <IAICanvasUndoButton />
           <IAICanvasRedoButton />
         </ButtonGroup>
 
-        <ButtonGroup isAttached>
-          <IAIIconButton
-            aria-label={`${t('common.upload')}`}
-            tooltip={`${t('common.upload')}`}
-            icon={<FaUpload />}
-            isDisabled={isStaging}
-            {...getUploadButtonProps()}
-          />
-          <input {...getUploadInputProps()} />
-          <IAIIconButton
-            aria-label={`${t('unifiedCanvas.clearCanvas')}`}
-            tooltip={`${t('unifiedCanvas.clearCanvas')}`}
-            icon={<FaTrash />}
-            onClick={handleResetCanvas}
-            colorScheme="error"
-            isDisabled={isStaging}
-          />
-        </ButtonGroup>
+        
         <ButtonGroup isAttached>
           <IAICanvasSettingsButtonPopover />
         </ButtonGroup>

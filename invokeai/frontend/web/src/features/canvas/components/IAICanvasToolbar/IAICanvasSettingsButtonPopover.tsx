@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { ButtonGroup, Flex } from '@chakra-ui/react';
 import { createMemoizedSelector } from 'app/store/createMemoizedSelector';
 import { stateSelector } from 'app/store/store';
 import { useAppDispatch, useAppSelector } from 'app/store/storeHooks';
@@ -6,6 +6,9 @@ import IAIIconButton from 'common/components/IAIIconButton';
 import IAIPopover from 'common/components/IAIPopover';
 import IAISimpleCheckbox from 'common/components/IAISimpleCheckbox';
 import ClearCanvasHistoryButtonModal from 'features/canvas/components/ClearCanvasHistoryButtonModal';
+import { useCopyImageToClipboard } from 'common/hooks/useCopyImageToClipboard';
+import { useImageUploadButton } from 'common/hooks/useImageUploadButton';
+
 import {
   setShouldAntialias,
   setShouldAutoSave,
@@ -17,15 +20,31 @@ import {
   setShouldShowSliders,
   setShouldShowIntermediates,
   setShouldSnapToGrid,
+  resetCanvas,
 } from 'features/canvas/store/canvasSlice';
+import { isStagingSelector } from 'features/canvas/store/canvasSelectors';
+import {
+  canvasCopiedToClipboard,
+  canvasDownloadedAsImage,
+  canvasMerged,
+  canvasSavedToGallery,
+} from 'features/canvas/store/actions';
 import { ChangeEvent, memo, useCallback } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
-import { FaWrench } from 'react-icons/fa';
+import {
+  FaCopy,
+  FaDownload,
+  FaLayerGroup,
+  FaSave,
+  FaWrench,
+  FaTrash,
+  FaUpload,
+} from 'react-icons/fa';
 
 export const canvasControlsSelector = createMemoizedSelector(
-  [stateSelector],
-  ({ canvas }) => {
+  [stateSelector, isStagingSelector],
+  ({ canvas }, isStaging ) => {
     const {
       shouldAutoSave,
       shouldCropToBoundingBoxOnSave,
@@ -50,6 +69,7 @@ export const canvasControlsSelector = createMemoizedSelector(
       shouldRestrictStrokesToBox,
       shouldAntialias,
       shouldShowSliders,
+      isStaging,
     };
   }
 );
@@ -57,6 +77,11 @@ export const canvasControlsSelector = createMemoizedSelector(
 const IAICanvasSettingsButtonPopover = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const { isClipboardAPIAvailable } = useCopyImageToClipboard();
+
+  const { getUploadButtonProps, getUploadInputProps } = useImageUploadButton({
+    postUploadAction: { type: 'SET_CANVAS_INITIAL_IMAGE' },
+  });
 
   const {
     shouldAutoSave,
@@ -69,6 +94,7 @@ const IAICanvasSettingsButtonPopover = () => {
     shouldRestrictStrokesToBox,
     shouldAntialias,
     shouldShowSliders,
+    isStaging,
   } = useAppSelector(canvasControlsSelector);
 
   useHotkeys(
@@ -82,6 +108,33 @@ const IAICanvasSettingsButtonPopover = () => {
     },
     [shouldSnapToGrid]
   );
+
+  const handleMergeVisible = useCallback(() => {
+    dispatch(canvasMerged());
+  }, [dispatch]);
+
+  const handleSaveToGallery = useCallback(() => {
+    dispatch(canvasSavedToGallery());
+  }, [dispatch]);
+
+  const handleCopyImageToClipboard = useCallback(() => {
+    if (!isClipboardAPIAvailable) {
+      return;
+    }
+    dispatch(canvasCopiedToClipboard());
+  }, [dispatch, isClipboardAPIAvailable]);
+
+  const handleDownloadAsImage = useCallback(() => {
+    dispatch(canvasDownloadedAsImage());
+  }, [dispatch]);
+
+  const handleResetCanvas = useCallback(() => {
+    dispatch(resetCanvas());
+  }, [dispatch]);
+
+
+
+
 
   const handleChangeShouldSnapToGrid = useCallback(
     (e: ChangeEvent<HTMLInputElement>) =>
@@ -147,6 +200,58 @@ const IAICanvasSettingsButtonPopover = () => {
       }
     >
       <Flex direction="column" gap={2}>
+        <ButtonGroup>
+        <IAIIconButton
+            aria-label={`${t('unifiedCanvas.mergeVisible')} (Shift+M)`}
+            tooltip={`${t('unifiedCanvas.mergeVisible')} (Shift+M)`}
+            icon={<FaLayerGroup />}
+            onClick={handleMergeVisible}
+            isDisabled={isStaging}
+          />
+          <IAIIconButton
+            aria-label={`${t('unifiedCanvas.saveToGallery')} (Shift+S)`}
+            tooltip={`${t('unifiedCanvas.saveToGallery')} (Shift+S)`}
+            icon={<FaSave />}
+            onClick={handleSaveToGallery}
+            isDisabled={isStaging}
+          />
+          {isClipboardAPIAvailable && (
+            <IAIIconButton
+              aria-label={`${t('unifiedCanvas.copyToClipboard')} (Cmd/Ctrl+C)`}
+              tooltip={`${t('unifiedCanvas.copyToClipboard')} (Cmd/Ctrl+C)`}
+              icon={<FaCopy />}
+              onClick={handleCopyImageToClipboard}
+              isDisabled={isStaging}
+            />
+          )}
+          <IAIIconButton
+            aria-label={`${t('unifiedCanvas.downloadAsImage')} (Shift+D)`}
+            tooltip={`${t('unifiedCanvas.downloadAsImage')} (Shift+D)`}
+            icon={<FaDownload />}
+            onClick={handleDownloadAsImage}
+            isDisabled={isStaging}
+          />
+
+        </ButtonGroup>
+        <ButtonGroup isAttached>
+          <IAIIconButton
+            aria-label={`${t('common.upload')}`}
+            tooltip={`${t('common.upload')}`}
+            icon={<FaUpload />}
+            isDisabled={isStaging}
+            {...getUploadButtonProps()}
+          />
+          <input {...getUploadInputProps()} />
+          <IAIIconButton
+            aria-label={`${t('unifiedCanvas.clearCanvas')}`}
+            tooltip={`${t('unifiedCanvas.clearCanvas')}`}
+            icon={<FaTrash />}
+            onClick={handleResetCanvas}
+            colorScheme="error"
+            isDisabled={isStaging}
+          />
+        </ButtonGroup>
+
         <IAISimpleCheckbox
           label={t('unifiedCanvas.showIntermediates')}
           isChecked={shouldShowIntermediates}
