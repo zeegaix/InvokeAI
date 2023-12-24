@@ -18,9 +18,10 @@ import {
   resetCanvasView,
   setTool,
   setLayer,
+  setIsMaskEnabled,
 } from 'features/canvas/store/canvasSlice';
 import { getCanvasBaseLayer } from 'features/canvas/util/konvaInstanceProvider';
-import { memo, useCallback } from 'react';
+import { memo, useCallback, ChangeEvent } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 import {
@@ -34,7 +35,7 @@ import {
   FaUpload,
   FaMask,
 } from 'react-icons/fa';
-
+import SettingSwitch from 'features/system/components/SettingsModal/SettingSwitch';
 import IAICanvasRedoButton from './IAICanvasRedoButton';
 import IAICanvasSettingsButtonPopover from './IAICanvasSettingsButtonPopover';
 import IAICanvasToolChooserOptions from './IAICanvasToolChooserOptions';
@@ -76,10 +77,7 @@ const IAICanvasToolbar = () => {
     tool,
   } = useAppSelector(selector);
 
-  const handleToggleMaskLayer = useCallback(() => {
-    dispatch(setLayer(layer === 'mask' ? 'base' : 'mask'));
-  }, [dispatch, layer]);
-
+  
   useHotkeys(
     ['q'],
     () => {
@@ -236,6 +234,20 @@ const IAICanvasToolbar = () => {
     dispatch(canvasDownloadedAsImage());
   }, [dispatch]);
 
+  const handleToggleEnableMask = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setIsMaskEnabled(e.target.checked));
+    }, 
+      [dispatch]
+  );
+
+  const handleToggleMaskLayer = useCallback(() => {
+    dispatch(setLayer(layer === 'mask' ? 'base' : 'mask'));
+    if (!isMaskEnabled) {
+      dispatch(setIsMaskEnabled(!isMaskEnabled));
+    }
+  }, [dispatch, layer, isMaskEnabled]);
+
 
   return (
        
@@ -246,7 +258,24 @@ const IAICanvasToolbar = () => {
           flexWrap: 'wrap',
         }}
       >
-      
+        <Flex
+          sx={{
+            backgroundColor: 'rgb(124, 135, 156)', // slightly gray color
+            borderRadius: '5px', // rounded corners
+            alignItems: 'center',
+            gap: 2,
+            flexWrap: 'wrap',
+          }}
+        >
+         <SettingSwitch
+         sx={{
+          marginLeft: '10px', // add more gap to the right
+        }}
+                 // label={t('unifiedCanvas.enableMask')}
+                  tooltip={t('unifiedCanvas.enableMask')}
+                  isChecked={isMaskEnabled}
+                  onChange={handleToggleEnableMask}
+           />
 
         <IAIIconButton
           aria-label={t('unifiedCanvas.maskingOptions')}
@@ -256,7 +285,7 @@ const IAICanvasToolbar = () => {
           onClick={handleToggleMaskLayer}
           isDisabled={isStaging}
         />
-        
+        </Flex>
         <IAICanvasToolChooserOptions />
 
         <ButtonGroup isAttached>
