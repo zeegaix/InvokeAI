@@ -1,8 +1,9 @@
-import { ButtonGroup, Flex } from '@chakra-ui/react';
+import { Divider, Flex } from '@chakra-ui/react';
 import { createMemoizedSelector } from 'app/store/createMemoizedSelector';
 import { stateSelector } from 'app/store/store';
 import { useAppDispatch, useAppSelector } from 'app/store/storeHooks';
 import IAIIconButton from 'common/components/IAIIconButton';
+import IAIButton from 'common/components/IAIButton';
 import IAIPopover from 'common/components/IAIPopover';
 import IAISimpleCheckbox from 'common/components/IAISimpleCheckbox';
 import ClearCanvasHistoryButtonModal from 'features/canvas/components/ClearCanvasHistoryButtonModal';
@@ -200,58 +201,73 @@ const IAICanvasSettingsButtonPopover = () => {
       }
     >
       <Flex direction="column" gap={2}>
-        <ButtonGroup>
-        <IAIIconButton
+        
+          <IAIButton
             aria-label={`${t('unifiedCanvas.mergeVisible')} (Shift+M)`}
             tooltip={`${t('unifiedCanvas.mergeVisible')} (Shift+M)`}
-            icon={<FaLayerGroup />}
+            leftIcon={<FaLayerGroup />}
             onClick={handleMergeVisible}
             isDisabled={isStaging}
-          />
-          <IAIIconButton
+          >
+            {t('unifiedCanvas.mergeVisible')}
+          </IAIButton>
+
+          <IAIButton
             aria-label={`${t('unifiedCanvas.saveToGallery')} (Shift+S)`}
             tooltip={`${t('unifiedCanvas.saveToGallery')} (Shift+S)`}
-            icon={<FaSave />}
+            leftIcon={<FaSave />}
             onClick={handleSaveToGallery}
             isDisabled={isStaging}
-          />
+          > 
+            {t('unifiedCanvas.saveToGallery')}
+          </IAIButton>
+
           {isClipboardAPIAvailable && (
-            <IAIIconButton
+            <IAIButton
               aria-label={`${t('unifiedCanvas.copyToClipboard')} (Cmd/Ctrl+C)`}
               tooltip={`${t('unifiedCanvas.copyToClipboard')} (Cmd/Ctrl+C)`}
-              icon={<FaCopy />}
+              leftIcon={<FaCopy />}
               onClick={handleCopyImageToClipboard}
               isDisabled={isStaging}
-            />
+            >
+              {t('unifiedCanvas.copyToClipboard')}
+            </IAIButton>
           )}
-          <IAIIconButton
+
+          <IAIButton
             aria-label={`${t('unifiedCanvas.downloadAsImage')} (Shift+D)`}
             tooltip={`${t('unifiedCanvas.downloadAsImage')} (Shift+D)`}
-            icon={<FaDownload />}
+            leftIcon={<FaDownload />}
             onClick={handleDownloadAsImage}
             isDisabled={isStaging}
-          />
-
-        </ButtonGroup>
-        <ButtonGroup isAttached>
-          <IAIIconButton
+          >
+            {t('unifiedCanvas.downloadAsImage')}
+          </IAIButton>       
+        
+          <IAIButton
             aria-label={`${t('common.upload')}`}
             tooltip={`${t('common.upload')}`}
-            icon={<FaUpload />}
+            leftIcon={<FaUpload />}
             isDisabled={isStaging}
             {...getUploadButtonProps()}
-          />
-          <input {...getUploadInputProps()} />
-          <IAIIconButton
+          >
+            {t('common.upload')}
+          </IAIButton>
+
+          <IAIButton
             aria-label={`${t('unifiedCanvas.clearCanvas')}`}
             tooltip={`${t('unifiedCanvas.clearCanvas')}`}
-            icon={<FaTrash />}
+            leftIcon={<FaTrash />}
             onClick={handleResetCanvas}
             colorScheme="error"
             isDisabled={isStaging}
-          />
-        </ButtonGroup>
-
+          >
+            {t('unifiedCanvas.clearCanvas')}
+          </IAIButton>
+          
+          <Divider my={1} />
+          <input {...getUploadInputProps()} />
+        
         <IAISimpleCheckbox
           label={t('unifiedCanvas.showIntermediates')}
           isChecked={shouldShowIntermediates}
@@ -304,7 +320,11 @@ const IAICanvasSettingsButtonPopover = () => {
           isChecked={shouldShowSliders}
           onChange={handleChangeShouldSliders}
         />
+        <Divider my={2} />
         <ClearCanvasHistoryButtonModal />
+
+        
+
       </Flex>
     </IAIPopover>
   );
