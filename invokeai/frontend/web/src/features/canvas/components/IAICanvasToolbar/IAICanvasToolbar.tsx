@@ -103,10 +103,13 @@ const IAICanvasToolbar = () => {
     []
   );
 
+  const handleToggleEnableMaskKey = () =>
+  dispatch(setIsMaskEnabled(!isMaskEnabled));
+
   useHotkeys(
     ['h'],
     () => {
-      handleToggleEnableMask();
+      handleToggleEnableMaskKey();
     },
     {
       enabled: () => !isStaging,
@@ -298,7 +301,7 @@ const IAICanvasToolbar = () => {
                 />
 
                 <SettingSwitch
-                        // label={t('unifiedCanvas.enableMask')}
+                        //= label={t('unifiedCanvas.enableMask')}
                           tooltip={t('unifiedCanvas.enableMask')}
                           isChecked={isMaskEnabled}
                           onChange={handleToggleEnableMask}

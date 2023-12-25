@@ -861,7 +861,7 @@
         "betaLimitToBox": "Ограничить выделением",
         "betaPreserveMasked": "Сохранять маскируемую область",
         "antialiasing": "Не удалось скопировать ссылку на изображение",
-        "saveMask": "Сохранить $t(unifiedCanvas.mask)",
+        "saveGenerationMask": "Сохранить $t(unifiedCanvas.mask)",
         "showResultsOn": "Показывать результаты (вкл)",
         "showResultsOff": "Показывать результаты (вЫкл)"
     },

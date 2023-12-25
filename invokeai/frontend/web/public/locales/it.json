@@ -853,7 +853,7 @@
         "antialiasing": "Anti aliasing",
         "showResultsOn": "Mostra i risultati (attivato)",
         "showResultsOff": "Mostra i risultati (disattivato)",
-        "saveMask": "Salva $t(unifiedCanvas.mask)"
+        "saveGenerationMask": "Salva $t(unifiedCanvas.mask)"
     },
     "accessibility": {
         "modelSelect": "Seleziona modello",

@@ -840,7 +840,7 @@
         "antialiasing": "抗锯齿",
         "showResultsOn": "显示结果 (开)",
         "showResultsOff": "显示结果 (关)",
-        "saveMask": "保存 $t(unifiedCanvas.mask)"
+        "saveGenerationMask": "保存 $t(unifiedCanvas.mask)"
     },
     "accessibility": {
         "modelSelect": "模型选择",

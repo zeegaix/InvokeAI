@@ -52,7 +52,7 @@ const IAICanvasToolChooserOptions = () => {
       enabled: () => !isStaging,
       preventDefault: true,
     },
-    []
+    [tool]
   );
 
   useHotkeys(

@@ -44,7 +44,7 @@ const IAICanvasMaskOptions = () => {
   
 
 
-  const handleSaveMask = useCallback(async () => {
+  const handleSaveGenerationMask = useCallback(async () => {
     dispatch(canvasMaskSavedToGallery());
   }, [dispatch]);
 
@@ -72,8 +72,8 @@ const IAICanvasMaskOptions = () => {
         <Box sx={{ paddingTop: 2, paddingBottom: 2 }}>
           <IAIColorPicker color={maskColor} onChange={handleChangeMaskColor} />
         </Box>
-        <IAIButton size="sm" leftIcon={<FaSave />} onClick={handleSaveMask}>
-          {t('unifiedCanvas.saveMask')}
+        <IAIButton size="sm" leftIcon={<FaSave />} onClick={handleSaveGenerationMask}>
+          {t('unifiedCanvas.saveGenerationMask')}
         </IAIButton>
       </Flex>
   );

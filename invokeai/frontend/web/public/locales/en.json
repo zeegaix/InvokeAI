@@ -418,8 +418,8 @@
             "title": "Change Tabs"
         },
         "clearMask": {
-            "desc": "Clear the entire mask",
-            "title": "Clear Mask"
+            "desc": "Clear the entire Generation mask",
+            "title": "Clear Generation Mask"
         },
         "closePanels": {
             "desc": "Closes open panels",
@@ -1589,7 +1589,7 @@
         "clearCanvasHistoryConfirm": "Are you sure you want to clear the canvas history?",
         "clearCanvasHistoryMessage": "Clearing the canvas history leaves your current canvas intact, but irreversibly clears the undo and redo history.",
         "clearHistory": "Clear History",
-        "clearMask": "Clear Mask (Shift+C)",
+        "clearMask": "Clear Generation Mask (Shift+C)",
         "colorPicker": "Color Picker",
         "copyToClipboard": "Copy to Clipboard",
         "cursorPosition": "Cursor Position",
@@ -1600,14 +1600,14 @@
         "emptyTempImageFolder": "Empty Temp Image Folder",
         "emptyTempImagesFolderConfirm": "Are you sure you want to empty the temp folder?",
         "emptyTempImagesFolderMessage": "Emptying the temp image folder also fully resets the Unified Canvas. This includes all undo/redo history, images in the staging area, and the canvas base layer.",
-        "enableMask": "Enable Mask",
+        "enableMask": "Enable Generation Mask",
         "eraseBoundingBox": "Erase Bounding Box",
         "eraser": "Eraser",
         "fillBoundingBox": "Fill Bounding Box",
         "layer": "Layer",
         "limitStrokesToBox": "Limit Strokes to Box",
         "mask": "Mask",
-        "maskingOptions": "Masking Options",
+        "maskingOptions": "Edit Generation Mask (Q)",
         "mergeVisible": "Merge Visible",
         "move": "Move",
         "next": "Next",
@@ -1616,7 +1616,7 @@
         "redo": "Redo",
         "resetView": "Reset View",
         "saveBoxRegionOnly": "Save Box Region Only",
-        "saveMask": "Save $t(unifiedCanvas.mask)",
+        "saveGenerationMask": "Save Generation $t(unifiedCanvas.mask)",
         "saveToGallery": "Save To Gallery",
         "scaledBoundingBox": "Scaled Bounding Box",
         "showCanvasDebugInfo": "Show Additional Canvas Info",
