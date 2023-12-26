@@ -5,7 +5,7 @@ import { createMemoizedSelector } from 'app/store/createMemoizedSelector';
 import { stateSelector } from 'app/store/store';
 import { isStagingSelector } from 'features/canvas/store/canvasSelectors';
 import { useAppDispatch, useAppSelector } from 'app/store/storeHooks';
-
+import { FaCircle } from "react-icons/fa";
 
 import { RgbaColor } from 'react-colorful';
 
@@ -56,7 +56,7 @@ const IAICanvasSliders = () => {
 
     return (
 
-        <Flex minWidth={5} minHeight="50" direction="column" gap={10} width="0%" height="50%" align='center' background="rgb(43, 48, 59)" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', padding: '14px', borderRadius: '20px',
+        <Flex minWidth={5} minHeight="50" direction="column" gap={10} width="0%" height="50%" align='center' background="rgb(43, 48, 59)" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', padding: '15px', borderRadius: '20px',
              boxShadow: '0px 0px 1px black', left: '5px' }} >
           <Flex direction="row" gap={4}  height="50%" >
             <IAISlider
@@ -69,6 +69,10 @@ const IAICanvasSliders = () => {
              
               
               sliderNumberInputProps={{ max: 500 }}
+              sliderThumbProps={{
+                children: <FaCircle />, // Replace with your icon
+                boxSize: 5, // Adjust size as needed
+              }}
             />
           </Flex>
             <Flex direction="row" gap={4}  height="50%">
@@ -82,6 +86,10 @@ const IAICanvasSliders = () => {
               value={brushColor.a}
               //  withInput
               onChange={handleChangeA}
+              sliderThumbProps={{
+                children: <FaCircle />, // Replace with your icon
+                boxSize: 5, // Adjust size as needed
+              }}
             />
             </Flex>
         </Flex>
